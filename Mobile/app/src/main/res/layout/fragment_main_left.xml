@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="none"
+    android:orientation="vertical"
+    android:background="@drawable/bg_menu"
+    android:scaleType="fitXY" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_up_down_line" >
+
+        <!--<com.waysolutions.waylogistic.Interface.Views.ResizableImageView-->
+
+        <ImageView
+            android:id="@+id/iv_fml_logo"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="8dp"
+            android:src="@drawable/logo_ws"
+            android:background="@drawable/circle"
+            android:layout_margin="16dp"
+            tools:ignore="ContentDescription"/>
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_fml_usuario"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toEndOf="@+id/iv_fml_logo"-->
+            <!--android:layout_toRightOf="@+id/iv_fml_logo"-->
+            <!--android:gravity="end"-->
+            <!--android:text="Usuario"-->
+            <!--android:textAlignment="textEnd"-->
+            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+            <!--android:textColor="@color/white"-->
+            <!--tools:ignore="PrivateResource,RtlSymmetry" />-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/iv_fml_logo"
+            android:layout_toRightOf="@+id/iv_fml_logo" >
+
+            <TextView
+                android:id="@+id/tv_fml_operador"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="Operador"
+                android:textAlignment="textEnd"
+                android:textColor="@color/white"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                tools:ignore="PrivateResource,RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/tv_fml_usuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="Usuario"
+                android:textAlignment="textEnd"
+                android:textColor="@color/white"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:ignore="PrivateResource,RtlSymmetry" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llRoot"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+                android:id="@+id/vi_atencion_soluciones"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                custom:text = "@string/listview"
+                custom:src="@drawable/ico_atencion_solicitudes_bla"
+                custom:tint="@color/white" />
+
+            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+                android:id="@+id/vi_list"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                custom:text = "Lista de ruteo"
+                custom:src="@drawable/ico_lista_ruteo_bla"
+                custom:tint="@color/white" />
+
+            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+                android:id="@+id/vi_barcode"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                custom:text = "Códigos de barras"
+                custom:src="@drawable/ico_codigo_barras_bla"
+                custom:tint="@color/white" />
+
+            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+                android:id="@+id/vi_logout"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                custom:text = "Cerrar sesión"
+                custom:src="@drawable/ico_exit_bla"
+                custom:tint="@color/white" />
+
+            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+                android:id="@+id/vi_setting"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                custom:text = "@string/setting"
+                custom:src="@drawable/ic_gear"
+                custom:tint="@color/white"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
