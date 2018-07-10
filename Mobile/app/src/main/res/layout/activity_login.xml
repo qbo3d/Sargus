@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Interface.Activities.LoginActivity"
-    android:background="@drawable/login_background_16_9">
+    tools:context=".Activities.LoginActivity"
+    android:background="@color/colorPrimaryDark">
 
     <!-- Login progress -->
     <!--<ProgressBar-->
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:padding="@dimen/dim_space_between"
+        android:padding="16dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Registro"
-            android:textColor="@color/verde"
+            android:textColor="@color/colorPrimary"
             android:textAlignment="center"
             android:padding="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textColorHint="@color/verde">
+            android:textColorHint="@color/colorPrimary">
             <AutoCompleteTextView
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -51,14 +51,14 @@
                 android:imeOptions="actionNext"
                 android:padding="12dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/verde"/>
+                android:textColorHint="@color/colorPrimary"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textColorHint="@color/verde">
+            android:textColorHint="@color/colorPrimary">
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
@@ -72,24 +72,16 @@
                 android:singleLine="true"
                 android:padding="12dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/verde" />
+                android:textColorHint="@color/colorPrimary" />
         </android.support.design.widget.TextInputLayout>
-
-        <CheckBox
-            android:id="@+id/mantener"
-            android:theme="@style/checkBoxStyleLigth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/login_mantener"
-            android:padding="12dp"/>
 
         <Button
             android:id="@+id/email_sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/login_action_sign_in"
-            android:backgroundTint="@color/verde"
+            android:text="Ingresar"
+            android:backgroundTint="@color/colorPrimary"
             android:background="@drawable/shape_rounded_item"
             android:textColor="@color/white"
             tools:ignore="UnusedAttribute" />

@@ -7,39 +7,24 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:scrollbars="none"
     android:orientation="vertical"
-    android:background="@drawable/bg_menu"
+    android:background="@color/colorPrimaryDark"
     android:scaleType="fitXY" >
 
     <RelativeLayout
+        android:id="@+id/rl_fml_perfil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_up_down_line" >
-
-        <!--<com.waysolutions.waylogistic.Interface.Views.ResizableImageView-->
 
         <ImageView
             android:id="@+id/iv_fml_logo"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:padding="8dp"
-            android:src="@drawable/logo_ws"
+            android:src="@drawable/logo"
             android:background="@drawable/circle"
             android:layout_margin="16dp"
             tools:ignore="ContentDescription"/>
-
-        <!--<TextView-->
-            <!--android:id="@+id/tv_fml_usuario"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_toEndOf="@+id/iv_fml_logo"-->
-            <!--android:layout_toRightOf="@+id/iv_fml_logo"-->
-            <!--android:gravity="end"-->
-            <!--android:text="Usuario"-->
-            <!--android:textAlignment="textEnd"-->
-            <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-            <!--android:textColor="@color/white"-->
-            <!--tools:ignore="PrivateResource,RtlSymmetry" />-->
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -54,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:text="Operador"
+                android:text="Proyecto"
                 android:textAlignment="textEnd"
                 android:textColor="@color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -83,31 +68,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+            <com.qbo3d.sargus.CustomControls.MenuItemList
                 android:id="@+id/vi_atencion_soluciones"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                custom:text = "@string/listview"
+                custom:text = "Item 1"
                 custom:src="@drawable/ico_atencion_solicitudes_bla"
                 custom:tint="@color/white" />
 
-            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+            <com.qbo3d.sargus.CustomControls.MenuItemList
                 android:id="@+id/vi_list"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                custom:text = "Lista de ruteo"
-                custom:src="@drawable/ico_lista_ruteo_bla"
+                custom:text = "Item "
+                custom:src="@drawable/ic_gear"
                 custom:tint="@color/white" />
 
-            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+            <com.qbo3d.sargus.CustomControls.MenuItemList
                 android:id="@+id/vi_barcode"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                custom:text = "Códigos de barras"
+                custom:text = "Item 3"
                 custom:src="@drawable/ico_codigo_barras_bla"
                 custom:tint="@color/white" />
 
-            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+            <com.qbo3d.sargus.CustomControls.MenuItemList
                 android:id="@+id/vi_logout"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -115,16 +100,15 @@
                 custom:src="@drawable/ico_exit_bla"
                 custom:tint="@color/white" />
 
-            <com.waysolutions.waylogistic.Logic.CustomControls.MenuItemList
+            <com.qbo3d.sargus.CustomControls.MenuItemList
                 android:id="@+id/vi_setting"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                custom:text = "@string/setting"
+                custom:text = "Item 2"
                 custom:src="@drawable/ic_gear"
                 custom:tint="@color/white"
                 android:visibility="gone"/>
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

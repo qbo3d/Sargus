@@ -12,16 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.qbo3d.sargus.Activities.LoginActivity;
 import com.qbo3d.sargus.Activities.MainActivity;
 import com.qbo3d.sargus.CustomControls.MenuItemList;
-import com.qbo3d.sargus.Interface.Activities.LoginActivity;
-import com.qbo3d.sargus.Interface.Fragments.BarcodeFragment;
-import com.qbo3d.sargus.Interface.Fragments.OrdenesServicioFragment;
-import com.qbo3d.sargus.Interface.Fragments.RuteoFragment;
-import com.qbo3d.sargus.Logic.Util;
-import com.qbo3d.sargus.Logic.Vars;
+import com.qbo3d.sargus.Fragments.PrincipalFragment;
+import com.qbo3d.sargus.Fragments.SecundarioFragment;
+import com.qbo3d.sargus.R;
+import com.qbo3d.sargus.Utilities.Util;
+import com.qbo3d.sargus.Utilities.Vars;
 
 public class LeftSlidingMenuFragment extends Fragment {
 
@@ -56,10 +58,11 @@ public class LeftSlidingMenuFragment extends Fragment {
 
 		vi_atencion_soluciones = view.findViewById(R.id.vi_atencion_soluciones);
 		vi_atencion_soluciones.setSelected(true);
+
 		vi_atencion_soluciones.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				newContent = new OrdenesServicioFragment();
+				newContent = new PrincipalFragment();
 				vi_atencion_soluciones.setSelected(true);
 				vi_list.setSelected(false);
 				vi_barcode.setSelected(false);
@@ -77,7 +80,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 		vi_list.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				newContent = new RuteoFragment();
+				newContent = new SecundarioFragment();
 				vi_atencion_soluciones.setSelected(false);
 				vi_list.setSelected(true);
 				vi_barcode.setSelected(false);
@@ -85,24 +88,6 @@ public class LeftSlidingMenuFragment extends Fragment {
 				MainActivity.ivTitleMenu.setVisibility(View.VISIBLE);
 
 				MainActivity.ivTitleName.setText(vi_list.getText());
-
-				if (newContent != null)
-					switchFragment(getActivity(), newContent);
-			}
-		});
-
-		vi_barcode = view.findViewById(R.id.vi_barcode);
-		vi_barcode.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				newContent = new BarcodeFragment();
-				vi_atencion_soluciones.setSelected(false);
-				vi_list.setSelected(false);
-				vi_barcode.setSelected(true);
-				vi_logout.setSelected(false);
-				MainActivity.ivTitleMenu.setVisibility(View.GONE);
-
-				MainActivity.ivTitleName.setText(vi_barcode.getText());
 
 				if (newContent != null)
 					switchFragment(getActivity(), newContent);
@@ -130,10 +115,10 @@ public class LeftSlidingMenuFragment extends Fragment {
 			}
 		});
 
-		if (Vars.usuario != null){
-			tv_fml_operador.setText(Vars.usuario.getObjeto().getId_OperadorLogistico().getNombre());
-			tv_fml_usuario.setText(Vars.usuario.getObjeto().getNombre());
-		}
+//		if (Vars.usuario != null){
+//			tv_fml_operador.setText(Vars.usuario.getObjeto().getId_OperadorLogistico().getNombre());
+//			tv_fml_usuario.setText(Vars.usuario.getObjeto().getNombre());
+//		}
 
 		return view;
     }

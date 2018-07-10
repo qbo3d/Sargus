@@ -1,20 +1,15 @@
 package com.qbo3d.sargus.Activities;
 
-import android.annotation.SuppressLint;
-import android.app.LoaderManager.LoaderCallbacks;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -30,21 +25,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.waysolutions.waylogistic.Logic.Util;
-import com.waysolutions.waylogistic.Logic.Utilities.GCMClientManager;
-import com.waysolutions.waylogistic.R;
+import com.qbo3d.sargus.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends FragmentActivity implements
-        LoaderCallbacks<Cursor>,
-        GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends FragmentActivity {
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -53,11 +41,10 @@ public class LoginActivity extends FragmentActivity implements
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private CheckBox mMantenerView;
-
-    private SharedPreferences userDetails;
 
     private ProgressDialog progressDialog;
+
+    private Activity activity;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -86,8 +73,6 @@ public class LoginActivity extends FragmentActivity implements
             }
         });
 
-        mMantenerView = findViewById(R.id.mantener);
-
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -96,43 +81,6 @@ public class LoginActivity extends FragmentActivity implements
             }
         });
     }
-
-//    private void populateAutoComplete() {
-//        if (!mayRequestContacts()) {
-//            return;
-//        }
-//
-//        getLoaderManager().initLoader(0, null, this);
-//    }
-
-//    private boolean mayRequestContacts() {
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-//            return true;
-//        }
-//        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-//            return true;
-//        }
-//        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-//            // To use the Snackbar from the design support library, ensure that the activity extends
-//            // AppCompatActivity and uses the Theme.AppCompat theme.
-//        } else {
-//            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-//        }
-//        return false;
-//    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-//                                           @NonNull int[] grantResults) {
-//        if (requestCode == REQUEST_READ_CONTACTS) {
-//            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                populateAutoComplete();
-//            }
-//        }
-//    }
 
 
     /**
@@ -184,7 +132,8 @@ public class LoginActivity extends FragmentActivity implements
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 
-            register(email,password);
+//            register(email,password);
+				Toast.makeText(activity, "Registrar", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -196,40 +145,6 @@ public class LoginActivity extends FragmentActivity implements
         return password.length() > 8;
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -237,12 +152,6 @@ public class LoginActivity extends FragmentActivity implements
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(getApplicationContext(), getString(R.string.login_connection_error), Toast.LENGTH_SHORT).show();
-        progressDialog.dismiss();
     }
 
     private interface ProfileQuery {
@@ -254,84 +163,79 @@ public class LoginActivity extends FragmentActivity implements
         int ADDRESS = 0;
     }
 
-    @SuppressLint("StaticFieldLeak")
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-        private final String mId;
-        private boolean res;
-
-        UserLoginTask(String email, String password, String Id) {
-            mEmail = email;
-            mPassword = password;
-            mId = Id;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            res = Util.getObjetoLogin(mPassword, mEmail, mId);
-            return true;
-        }
-
-        @SuppressLint("ApplySharedPref")
-        @Override
-        protected void onPostExecute(final Boolean success) {
-
-            progressDialog.dismiss();
-
-            if (success) {
-                if(res) {
-                    if (mMantenerView.isChecked()){
-                        userDetails = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        SharedPreferences.Editor edit = userDetails.edit();
-                        edit.putString("usuario", mEmail);
-                        edit.putString("password", mPassword);
-                        edit.commit();
-                    }
-                    callMain();
-                } else {
-                    mPasswordView.setError(getString(R.string.login_error_incorrect_password));
-                    mPasswordView.requestFocus();
-                }
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
+//    @SuppressLint("StaticFieldLeak")
+//    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+//
+//        private final String mEmail;
+//        private final String mPassword;
+//        private final String mId;
+//        private boolean res;
+//
+//        UserLoginTask(String email, String password, String Id) {
+//            mEmail = email;
+//            mPassword = password;
+//            mId = Id;
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            res = Util.getObjetoLogin(mPassword, mEmail, mId);
+//            return true;
+//        }
+//
+//        @SuppressLint("ApplySharedPref")
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//
+//            progressDialog.dismiss();
+//
+//            if (success) {
+//                if(res) {
+//                    if (mMantenerView.isChecked()){
+//                        userDetails = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                        SharedPreferences.Editor edit = userDetails.edit();
+//                        edit.putString("usuario", mEmail);
+//                        edit.putString("password", mPassword);
+//                        edit.commit();
+//                    }
+//                    callMain();
+//                } else {
+//                    mPasswordView.setError(getString(R.string.login_error_incorrect_password));
+//                    mPasswordView.requestFocus();
+//                }
+//            }
+//        }
+//    }
 
     private void callMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.transition_left_in, R.anim.transition_left_out);
         finish();
     }
 
-    private void register(final String email, final String password){
-
-        GCMClientManager pushClientManager = new GCMClientManager(LoginActivity.this, getResources().getString(R.string.gcm_defaultSenderId));
-        pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
-            @Override
-            public void onSuccess(String registrationId, boolean isNewRegistration) {
-                if (Util.isConnect(LoginActivity.this)) {
-                    new UserLoginTask(email, password, registrationId).execute((Void) null);
-                } else {
-                    mPasswordView.setError(getString(R.string.login_connection_error));
-                    mPasswordView.requestFocus();
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(String ex) {
-                super.onFailure(ex);
-
-                mPasswordView.setError(getString(R.string.login_connection_error));
-                mPasswordView.requestFocus();
-                progressDialog.dismiss();
-            }
-        });
-    }
+//    private void register(final String email, final String password){
+//
+//        GCMClientManager pushClientManager = new GCMClientManager(LoginActivity.this, getResources().getString(R.string.gcm_defaultSenderId));
+//        pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
+//            @Override
+//            public void onSuccess(String registrationId, boolean isNewRegistration) {
+//                if (Util.isConnect(LoginActivity.this)) {
+//                    new UserLoginTask(email, password, registrationId).execute((Void) null);
+//                } else {
+//                    mPasswordView.setError(getString(R.string.login_connection_error));
+//                    mPasswordView.requestFocus();
+//                    progressDialog.dismiss();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(String ex) {
+//                super.onFailure(ex);
+//
+//                mPasswordView.setError(getString(R.string.login_connection_error));
+//                mPasswordView.requestFocus();
+//                progressDialog.dismiss();
+//            }
+//        });
+//    }
 }

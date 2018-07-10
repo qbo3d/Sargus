@@ -1,3 +1,26 @@
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
+
     <string name="app_name">Sargus</string>
+
+    <!-- Sistema -->
+    <string name="file_wrong">Ocurrio un error al crear el archivo</string>
+    <string name="gcm_defaultSenderId">529159743009</string>
+
+    <!-- Strings related to login -->
+    <string name="login_usuario">Usuario</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_action_sign_in">Ingresar</string>
+    <string name="login_error_invalid_email">Usuario invalido</string>
+    <string name="login_error_invalid_password">Contraseña muy corta</string>
+    <string name="login_error_incorrect_password">Usuario o Contraseña incorrectos</string>
+    <string name="login_error_field_required">Campo requerido</string>
+    <string name="login_connection_error">Error de conexión</string>
+    <string name="login_net_error">Error de la red</string>
+    <string name="login_connection_error_content">Verifique la conexión a internet</string>
+    <string name="login_net_error_content">Verifique la conexión a la red de datos</string>
+
+    <!--ProgressDialog-->
+    <string name="pd_cargando" tools:ignore="TypographyEllipsis">Cargando...</string>
+    <string name="df_edit_name">fragment_edit_name</string>
 </resources>

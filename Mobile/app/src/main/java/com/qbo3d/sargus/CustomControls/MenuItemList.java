@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.qbo3d.sargus.R;
+
 /**
  * Created by Proyecto Simio on 03/10/2014.
  */
@@ -46,8 +48,8 @@ public class MenuItemList extends LinearLayout {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setSelected(boolean select){
         if (select){
-            tv_ti.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-            iv_ti.getDrawable().setTint(getResources().getColor(R.color.colorPrimaryDark));
+            tv_ti.setTextColor(getResources().getColor(R.color.colorPrimary));
+            iv_ti.getDrawable().setTint(getResources().getColor(R.color.colorPrimary));
         } else {
             tv_ti.setTextColor(getResources().getColor(R.color.white));
             iv_ti.getDrawable().setTint(getResources().getColor(R.color.white));
