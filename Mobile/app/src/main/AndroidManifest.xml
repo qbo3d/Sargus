@@ -9,6 +9,9 @@
         android:name="android.permission.ACCESS_MOCK_LOCATION"
         tools:ignore="MockLocation,ProtectedPermissions" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,6 +31,14 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppThem.NoActionBar.Fullscreen"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".Activities.ScanningActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".Activities.PeripheralActivity"
+            android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator" />
     </application>
 

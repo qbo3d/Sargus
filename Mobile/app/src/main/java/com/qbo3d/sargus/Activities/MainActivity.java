@@ -22,7 +22,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,10 @@ public class MainActivity extends SlidingFragmentActivity implements
 	public static View mFragmentFormView;
 
 	public static ProgressDialog progressDialog;
+
+	public static Button bt_tm_on;
+	public static Button bt_tm_off;
+	public static ProgressBar pb_tm_indicador;
 
 	private Activity activity;
 
@@ -110,12 +116,21 @@ public class MainActivity extends SlidingFragmentActivity implements
 		} else {
 			register(documento, password);
 		}
+
+		bt_tm_on = (Button) findViewById(R.id.bt_tm_on);
+		bt_tm_off = (Button) findViewById(R.id.bt_tm_off);
+		pb_tm_indicador = (ProgressBar) findViewById(R.id.pb_tm_indicador);
 	}
 
 	private void callLogin() {
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 		finish();
+	}
+
+	private void callScanning() {
+		Intent intent = new Intent(this, ScanningActivity.class);
+		startActivity(intent);
 	}
 
 	private void initView() {
@@ -154,7 +169,8 @@ public class MainActivity extends SlidingFragmentActivity implements
 				leftRightSlidingMenu.showMenu();
 				break;
 			case R.id.ib_tm_menu:
-				Toast.makeText(activity, "Menu", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(activity, "Menu", Toast.LENGTH_SHORT).show();
+				callScanning();
 				break;
 			default:
 				break;

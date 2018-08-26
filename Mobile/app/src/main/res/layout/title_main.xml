@@ -38,4 +38,33 @@
         android:background="@drawable/action_menu_white_48dp"
         android:backgroundTint="@color/white" />
 
+    <Button
+        android:id="@+id/bt_tm_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/ib_tm_menu"
+        android:text="Button"
+        android:layout_toLeftOf="@+id/ib_tm_menu"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/bt_tm_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/ib_tm_menu"
+        android:text="Button"
+        android:layout_toLeftOf="@+id/ib_tm_menu"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/pb_tm_indicador"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tv_tm_title"
+        android:visibility="gone" />
+
 </RelativeLayout>
