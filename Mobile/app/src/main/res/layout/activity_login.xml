@@ -1,68 +1,121 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Activities.LoginActivity"
-    android:background="@color/colorPrimaryDark">
+    android:keepScreenOn="true"
+    android:background="@drawable/bg_login">
 
-    <!-- Login progress -->
-    <!--<ProgressBar-->
-        <!--android:id="@+id/login_progress"-->
-        <!--style="?android:attr/progressBarStyleLarge"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:visibility="gone" />-->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:layout_margin="56dp"
+        android:src="@drawable/logo_sargus" />
 
-    <LinearLayout
-        android:id="@+id/login_form"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:padding="16dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+        android:gravity="right"
+        android:text="LOGIN"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:visibility="gone"/>
 
-        <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/shape_rounded_item"
+        android:elevation="4dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Registro"
-            android:textColor="@color/colorPrimary"
-            android:textAlignment="center"
-            android:padding="30dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:layout_height="64dp"
+            android:backgroundTint="@color/amarillo_oscuro"
+            android:background="@drawable/shape_rounded_item"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_account_circle_white_18dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textColorHint="@color/colorPrimary">
+            android:layout_height="64dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="2dp">
+
             <AutoCompleteTextView
                 android:id="@+id/email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginRight="48dp"
+                android:background="@drawable/shape_rounded_item"
                 android:hint="@string/login_usuario"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true"
                 android:imeOptions="actionNext"
-                android:padding="12dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/colorPrimary"/>
+                android:inputType="number"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:paddingStart="12dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/gris"
+                tools:ignore="RtlSymmetry" />
         </android.support.design.widget.TextInputLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_rounded_item"
+        android:elevation="4dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        tools:targetApi="lollipop">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:backgroundTint="@color/amarillo_oscuro"
+            android:background="@drawable/shape_rounded_item"
+            tools:ignore="UnusedAttribute">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_lock_open_white_18dp"
+                android:layout_alignParentLeft="true" />
+        </RelativeLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textColorHint="@color/colorPrimary">
-            <EditText
+            android:layout_height="64dp"
+            android:padding="2dp" >
+            <com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:hint="@string/login_password"
                 android:imeActionId="6"
                 android:imeActionLabel="@string/login_action_sign_in"
@@ -70,32 +123,32 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:padding="12dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/colorPrimary" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/gris"
+                android:background="@drawable/shape_rounded_item"
+                android:layout_marginLeft="48dp"
+                android:layout_marginStart="48dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingEnd="12dp"
+                app:tint_color="@color/colorPrimary"
+                tools:ignore="RtlSymmetry" />
         </android.support.design.widget.TextInputLayout>
 
-        <Button
-            android:id="@+id/email_sign_in_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Ingresar"
-            android:backgroundTint="@color/colorPrimary"
-            android:background="@drawable/shape_rounded_item"
-            android:textColor="@color/white"
-            tools:ignore="UnusedAttribute" />
+    </RelativeLayout>
 
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/app_name"
+    <Button
+        android:id="@+id/email_sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="Ingresar"
+        android:backgroundTint="@color/colorPrimary"
+        android:background="@drawable/shape_rounded_item"
         android:textColor="@color/white"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        android:elevation="4dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        tools:targetApi="lollipop" />
 
-</RelativeLayout>
+</LinearLayout>

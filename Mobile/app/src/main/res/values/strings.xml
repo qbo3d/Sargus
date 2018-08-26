@@ -23,4 +23,12 @@
     <!--ProgressDialog-->
     <string name="pd_cargando" tools:ignore="TypographyEllipsis">Cargando...</string>
     <string name="df_edit_name">fragment_edit_name</string>
+
+    <!-- Strings related to LeftSlidingMenu -->
+    <string name="lsm_proyecto">Proyecto</string>
+    <string name="lsm_ticket">Incidencia</string>
+    <string name="lsm_item">Blindobarra</string>
+    <string name="lsm_captura">Ingresar ítem</string>
+    <string name="lsm_logout">Cerrar sesión</string>
+
 </resources>

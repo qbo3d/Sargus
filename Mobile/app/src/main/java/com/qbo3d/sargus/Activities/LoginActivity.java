@@ -1,33 +1,36 @@
 package com.qbo3d.sargus.Activities;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.RequiresApi;
+import android.os.PowerManager;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.qbo3d.sargus.R;
-
-import java.util.List;
+import com.qbo3d.sargus.Util;
+import com.qbo3d.sargus.Utilities.GCMClientManager;
+import com.qbo3d.sargus.Utilities.Serv;
+import com.qbo3d.sargus.Vars;
 
 /**
  * A login screen that offers login via email/password.
@@ -44,19 +47,34 @@ public class LoginActivity extends FragmentActivity {
 
     private ProgressDialog progressDialog;
 
-    private Activity activity;
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
 
-        progressDialog = new ProgressDialog(this, R.style.Theme_AppCompat_DayNight_Dialog);
+        progressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
         progressDialog.setCancelable(false);
         progressDialog.setMessage(getString(R.string.pd_cargando));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                startActivity(intent);
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermission();
+
+        } else {
+            // write your logic here
+        }
 
         mEmailView = findViewById(R.id.email);
 //        populateAutoComplete();
@@ -80,6 +98,47 @@ public class LoginActivity extends FragmentActivity {
                 attemptLogin();
             }
         });
+    }
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) +
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) +
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale (this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale (this, Manifest.permission.CAMERA) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale (this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                Snackbar.make(this.findViewById(android.R.id.content),
+                        "Faltan permisos por habilitar",
+                        Snackbar.LENGTH_INDEFINITE).setAction("Habilitar",
+                        new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    requestPermissions(
+                                            new String[]{
+                                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                    Manifest.permission.CAMERA,
+                                                    Manifest.permission.ACCESS_FINE_LOCATION
+                                            }, Vars.PERMISSIONS_MULTIPLE_REQUEST);
+                                }
+                            }
+                        }).show();
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(
+                            new String[]{
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.CAMERA,
+                                    Manifest.permission.ACCESS_FINE_LOCATION
+                            }, Vars.PERMISSIONS_MULTIPLE_REQUEST);
+                }
+            }
+        } else {
+            // write your logic code if permission already granted
+        }
     }
 
 
@@ -117,11 +176,12 @@ public class LoginActivity extends FragmentActivity {
             mEmailView.setError(getString(R.string.login_error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.login_error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
         }
+//        else if (!isEmailValid(email)) {
+//            mEmailView.setError(getString(R.string.login_error_invalid_email));
+//            focusView = mEmailView;
+//            cancel = true;
+//        }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -132,80 +192,110 @@ public class LoginActivity extends FragmentActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 
-//            register(email,password);
-				Toast.makeText(activity, "Registrar", Toast.LENGTH_SHORT).show();
+            register(this, email,password);
         }
     }
 
-    private boolean isEmailValid(String email) {
-        return email.contains("@") && email.contains(".");
-    }
+//    private boolean isEmailValid(String email) {
+//        return email.contains("@") && email.contains(".");
+//    }
 
     private boolean isPasswordValid(String password) {
         return password.length() > 8;
     }
 
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-    }
-
-//    @SuppressLint("StaticFieldLeak")
-//    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+//    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+//        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
+//        ArrayAdapter<String> adapter =
+//                new ArrayAdapter<>(LoginActivity.this,
+//                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 //
-//        private final String mEmail;
-//        private final String mPassword;
-//        private final String mId;
-//        private boolean res;
-//
-//        UserLoginTask(String email, String password, String Id) {
-//            mEmail = email;
-//            mPassword = password;
-//            mId = Id;
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            res = Util.getObjetoLogin(mPassword, mEmail, mId);
-//            return true;
-//        }
-//
-//        @SuppressLint("ApplySharedPref")
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//
-//            progressDialog.dismiss();
-//
-//            if (success) {
-//                if(res) {
-//                    if (mMantenerView.isChecked()){
-//                        userDetails = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                        SharedPreferences.Editor edit = userDetails.edit();
-//                        edit.putString("usuario", mEmail);
-//                        edit.putString("password", mPassword);
-//                        edit.commit();
-//                    }
-//                    callMain();
-//                } else {
-//                    mPasswordView.setError(getString(R.string.login_error_incorrect_password));
-//                    mPasswordView.requestFocus();
-//                }
-//            }
-//        }
+//        mEmailView.setAdapter(adapter);
 //    }
+
+//    private interface ProfileQuery {
+//        String[] PROJECTION = {
+//                ContactsContract.CommonDataKinds.Email.ADDRESS,
+//                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
+//        };
+//
+//        int ADDRESS = 0;
+//    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        switch (requestCode) {
+            case Vars.PERMISSIONS_MULTIPLE_REQUEST:
+                if (grantResults.length > 0) {
+                    boolean cameraPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean readExternalFile = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                    if(cameraPermission && readExternalFile)
+                    {
+                        // write your logic here
+                    } else {
+                        Snackbar.make(this.findViewById(android.R.id.content),
+                                "Please Grant Permissions to upload profile photo",
+                                Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            requestPermissions(
+                                                    new String[]{Manifest.permission
+                                                            .READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                                                    Vars.PERMISSIONS_MULTIPLE_REQUEST);
+                                        }
+                                    }
+                                }).show();
+                    }
+                }
+                break;
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public class LoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        private Activity mActivity;
+        private final String mEmail;
+        private final String mPassword;
+        private final String mId;
+
+        LoginTask(Activity activity, String email, String password, String Id) {
+            mActivity = activity;
+            mEmail = email;
+            mPassword = password;
+            mId = Id;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Vars.isConn = Serv.getLogin(mActivity, mEmail, mPassword, mId);
+            return true;
+        }
+
+        @SuppressLint("ApplySharedPref")
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            progressDialog.dismiss();
+            if (success && Vars.isConn && Vars.usuario.getId() != null) {
+
+                Util.setStorageString(getBaseContext(), "documento", mEmail);
+                Util.setStorageString(getBaseContext(), "password", mPassword);
+
+                callMain();
+            } else if (!Vars.isConn) {
+                mPasswordView.setError(getString(R.string.login_connection_error_content));
+                mPasswordView.requestFocus();
+            } else if (Vars.usuario.getId() == null){
+                mPasswordView.setError(getString(R.string.login_error_incorrect_password));
+                mPasswordView.requestFocus();
+            }
+        }
+    }
 
     private void callMain() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -213,29 +303,29 @@ public class LoginActivity extends FragmentActivity {
         finish();
     }
 
-//    private void register(final String email, final String password){
-//
-//        GCMClientManager pushClientManager = new GCMClientManager(LoginActivity.this, getResources().getString(R.string.gcm_defaultSenderId));
-//        pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
-//            @Override
-//            public void onSuccess(String registrationId, boolean isNewRegistration) {
-//                if (Util.isConnect(LoginActivity.this)) {
-//                    new UserLoginTask(email, password, registrationId).execute((Void) null);
-//                } else {
-//                    mPasswordView.setError(getString(R.string.login_connection_error));
-//                    mPasswordView.requestFocus();
-//                    progressDialog.dismiss();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(String ex) {
-//                super.onFailure(ex);
-//
-//                mPasswordView.setError(getString(R.string.login_connection_error));
-//                mPasswordView.requestFocus();
-//                progressDialog.dismiss();
-//            }
-//        });
-//    }
+    private void register(final Activity activity, final String email, final String password){
+
+        GCMClientManager pushClientManager = new GCMClientManager(LoginActivity.this, getResources().getString(R.string.gcm_defaultSenderId));
+        pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
+            @Override
+            public void onSuccess(String registrationId, boolean isNewRegistration) {
+                if (Util.isConnect(activity, activity.getLocalClassName())) {
+                    new LoginTask(activity, email, password, registrationId).execute((Void) null);
+                } else {
+                    mPasswordView.setError(getString(R.string.login_connection_error));
+                    mPasswordView.requestFocus();
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(String ex) {
+                super.onFailure(ex);
+
+                mPasswordView.setError(getString(R.string.login_connection_error));
+                mPasswordView.requestFocus();
+                progressDialog.dismiss();
+            }
+        });
+    }
 }

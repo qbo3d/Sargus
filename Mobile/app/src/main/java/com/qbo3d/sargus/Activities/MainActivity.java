@@ -5,19 +5,13 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -36,38 +30,25 @@ import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.qbo3d.sargus.DialogFragment.DialogFragmentVal;
-import com.qbo3d.sargus.Fragments.PrincipalFragment;
-import com.qbo3d.sargus.Fragments.Sliding.LeftSlidingMenuFragment;
-import com.qbo3d.sargus.Fragments.Sliding.RightSlidingMenuFragment;
+import com.qbo3d.sargus.Fragments.ItemFragment;
+import com.qbo3d.sargus.Fragments.LeftSlidingMenuFragment;
+import com.qbo3d.sargus.Fragments.TicketFragment;
 import com.qbo3d.sargus.Objects.Usuario;
 import com.qbo3d.sargus.R;
+import com.qbo3d.sargus.Util;
 import com.qbo3d.sargus.Utilities.GCMClientManager;
-import com.qbo3d.sargus.Utilities.ImageHelper;
 import com.qbo3d.sargus.Utilities.Serv;
-import com.qbo3d.sargus.Utilities.Util;
-import com.qbo3d.sargus.Utilities.Vars;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import com.qbo3d.sargus.Vars;
 
 public class MainActivity extends SlidingFragmentActivity implements
-        OnClickListener,
+		OnClickListener,
 		DialogFragmentVal.Respuesta {
 
 	public static SlidingMenu leftRightSlidingMenu;
-	public static ImageButton ivTitleBtnLeft;
-	public static TextView ivTitleName;
-	public static ImageButton badgeBtnRight;
+	public static ImageButton ib_tm_hamburguesa;
+	public static TextView tv_tm_title;
+	public static ImageButton ib_tm_menu;
 	private Fragment mContent;
-	public static ImageButton ivTitleMenu;
 
 	public static View mFragmentFormView;
 
@@ -75,23 +56,9 @@ public class MainActivity extends SlidingFragmentActivity implements
 
 	private Activity activity;
 
-	public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Util.createFolders(this);
-
-		progressDialog = new ProgressDialog(this, R.style.Theme_AppCompat_DayNight_Dialog);
-		progressDialog.setCancelable(false);
-		progressDialog.setMessage(getString(R.string.pd_cargando));
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-		initLeftRightSlidingMenu();
-		setContentView(R.layout.activity_main);
-
-		activity = this;
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			Intent intent = new Intent();
@@ -111,9 +78,21 @@ public class MainActivity extends SlidingFragmentActivity implements
 			// write your logic here
 		}
 
+		progressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
+		progressDialog.setCancelable(false);
+		progressDialog.setMessage(getString(R.string.pd_cargando));
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+		initLeftRightSlidingMenu();
+		setContentView(R.layout.activity_main);
+
+		activity = this;
+
+		Util.createFolders(this);
+
 		initView();
 
-		ivTitleName.setText("Item 1");
+		tv_tm_title.setText(getResources().getString(R.string.lsm_ticket));
 
 		String documento;
 		String password;
@@ -141,15 +120,15 @@ public class MainActivity extends SlidingFragmentActivity implements
 
 	private void initView() {
 		mFragmentFormView = findViewById(R.id.content_frame);
-		ivTitleBtnLeft = (ImageButton) this.findViewById(R.id.ivTitleBtnLeft);
-		badgeBtnRight = (ImageButton) this.findViewById(R.id.badgeBtnRight);
-		ivTitleName = (TextView) this.findViewById(R.id.ivTitleName);
-		ivTitleBtnLeft.setOnClickListener(this);
-		badgeBtnRight.setOnClickListener(this);
+		ib_tm_hamburguesa = (ImageButton) this.findViewById(R.id.ib_tm_hamburguesa);
+		tv_tm_title = (TextView) this.findViewById(R.id.tv_tm_title);
+		ib_tm_menu = (ImageButton) this.findViewById(R.id.ib_tm_menu);
+		ib_tm_hamburguesa.setOnClickListener(this);
+		ib_tm_menu.setOnClickListener(this);
 	}
 
 	private void initLeftRightSlidingMenu() {
-		mContent = new PrincipalFragment();
+		mContent = new TicketFragment();
 		getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, mContent).commit();
 		setBehindContentView(R.layout.layout_main_left);
 		FragmentTransaction leftFragementTransaction = getSupportFragmentManager().beginTransaction();
@@ -159,29 +138,23 @@ public class MainActivity extends SlidingFragmentActivity implements
 
 		// customize the SlidingMenu
 		leftRightSlidingMenu = getSlidingMenu();
-		leftRightSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
+		leftRightSlidingMenu.setMode(SlidingMenu.LEFT);
 		leftRightSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		leftRightSlidingMenu.setFadeDegree(0.35f);
 		leftRightSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		leftRightSlidingMenu.setShadowDrawable(R.drawable.shadow);
 		leftRightSlidingMenu.setFadeEnabled(true);
 		leftRightSlidingMenu.setBehindScrollScale(0.333f);
-
-		leftRightSlidingMenu.setSecondaryMenu(R.layout.layout_main_right);
-		FragmentTransaction rightFragementTransaction = getSupportFragmentManager().beginTransaction();
-		Fragment rightFrag = new RightSlidingMenuFragment();
-		leftFragementTransaction.replace(R.id.main_right_fragment, rightFrag);
-		rightFragementTransaction.commit();
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.ivTitleBtnLeft:
-					leftRightSlidingMenu.showMenu();
+			case R.id.ib_tm_hamburguesa:
+				leftRightSlidingMenu.showMenu();
 				break;
-			case R.id.badgeBtnRight:
-				leftRightSlidingMenu.showSecondaryMenu(true);
+			case R.id.ib_tm_menu:
+				Toast.makeText(activity, "Menu", Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -242,14 +215,14 @@ public class MainActivity extends SlidingFragmentActivity implements
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			String usuario = Util.getStorageString(getBaseContext(), "usuario");
+			String objetoLogin = Util.getStorageString(getBaseContext(), "objeto_login");
 
-			if (usuario == null || usuario.equals("")) {
+			if (objetoLogin == null || objetoLogin.equals("")) {
 				Vars.isConn = Serv.getLogin(activity, mDocumento, mPassword, mId);
 			} else {
 				Vars.isConn = true;
 				Gson gson = new Gson();
-				Vars.usuario = gson.fromJson(usuario, Usuario.class);
+				Vars.usuario = gson.fromJson(objetoLogin, Usuario.class);
 			}
 			return true;
 		}
@@ -260,12 +233,44 @@ public class MainActivity extends SlidingFragmentActivity implements
 			if (success && Vars.isConn) {
 				if (Vars.usuario != null) {
 					if (Util.isConnect(activity, activity.getLocalClassName())) {
-//						new OrdenServicioTask().execute((Void) null);
-//						if (Vars.usuario != null) {
-//							LeftSlidingMenuFragment.tv_fml_operador.setText(Vars.usuario.getObjeto().getId_OperadorLogistico().getNombre());
-//							LeftSlidingMenuFragment.tv_fml_usuario.setText(Vars.usuario.getObjeto().getNombre());
-//						}
-						new DownloadImagesTask().execute();
+						new AllTicketTask().execute();
+					}
+					LeftSlidingMenuFragment.tv_fml_usuario.setText(Vars.usuario.getNombre());
+					LeftSlidingMenuFragment.tv_fml_proyecto.setText(Vars.usuario.getEntidad());
+				}
+			} else {
+				Util.disconnectMessage(activity, activity.getLocalClassName());
+			}
+		}
+	}
+
+	public class AllTicketTask extends AsyncTask<Void, Void, Boolean> {
+
+		AllTicketTask() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+
+			Vars.isConn = Serv.getAllTicket();
+
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			progressDialog.dismiss();
+			if (success && Vars.isConn) {
+				if (Vars.allTicket != null) {
+					if (Util.isConnect(activity, activity.getLocalClassName())) {
+						new EntitiesUserTask().execute();
+						Util.cargarAllTickets(activity, TicketFragment.lv_ft_ticket, R.layout.itemlist_ticket, Util.ticketListToData());
 					}
 				}
 			} else {
@@ -274,99 +279,152 @@ public class MainActivity extends SlidingFragmentActivity implements
 		}
 	}
 
-	public class DownloadImagesTask extends AsyncTask<Void, Void, Bitmap> {
+	public class EntitiesUserTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
-		protected Bitmap doInBackground(Void... params) {
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog.show();
+		}
 
-			try {
-				if (new File(Vars.pathMainFolfer  + File.separator + Vars.usuario.getPicture()).exists()) {
-					FileInputStream streamIn = new FileInputStream(Vars.pathMainFolfer  + File.separator + Vars.usuario.getObjeto().getNombreLogo());
-					Vars.logo = BitmapFactory.decodeStream(streamIn);
-				} else {
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			Vars.isConn = Serv.getEntitiesUser();
+			return true;
+		}
 
-					Vars.logo = download_Image(Vars.usuario.getServidor() + Vars.usuario.getObjeto().getUrl_logo());
-
-					if (Vars.logo == null) {
-						Vars.logo = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			progressDialog.dismiss();
+			if (success && Vars.isConn) {
+				if (Vars.entidad != null) {
+					if (Util.isConnect(activity, activity.getLocalClassName())) {
+						new GroupsEntityUserTask().execute();
 					}
-
-//			Almacenamiento de bitmap
-
-					OutputStream fOutputStream;
-					File file = new File(Vars.pathMainFolfer, Vars.usuario.getObjeto().getNombreLogo());
-					fOutputStream = new FileOutputStream(file);
-
-					Vars.logo.compress(Bitmap.CompressFormat.PNG, 100, fOutputStream);
-
-					fOutputStream.flush();
-					fOutputStream.close();
-
-					MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				//Toast.makeText(activity, "Save Failed", Toast.LENGTH_SHORT).show();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} else {
+				Util.disconnectMessage(activity, activity.getLocalClassName());
 			}
-
-			return Vars.logo;
-		}
-
-		@Override
-		protected void onPostExecute(Bitmap result) {
-			if (result != null) {
-				LeftSlidingMenuFragment.iv_fml_logo.setImageBitmap(result);
-				Bitmap roundedCornersImage = ImageHelper.getRoundedCornerBitmap(result, 104);
-				LeftSlidingMenuFragment.iv_fml_logo.setImageBitmap(roundedCornersImage);
-			}
-		}
-
-		private Bitmap download_Image(String url) {
-			Bitmap bitmap = null;
-			InputStream stream = null;
-			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-			bmOptions.inSampleSize = 1;
-
-			try {
-				stream = getHttpConnection(url);
-				if (stream != null) {
-					bitmap = BitmapFactory.decodeStream(stream, null, bmOptions);
-					stream.close();
-				}
-			}
-			catch (IOException e1) {
-				e1.printStackTrace();
-				System.out.println("downloadImage"+ e1.toString());
-			}
-			return bitmap;
-		}
-
-		public InputStream getHttpConnection(String urlString)  throws IOException {
-
-			InputStream stream = null;
-			URL url = new URL(urlString);
-			URLConnection connection = url.openConnection();
-
-			try {
-				HttpURLConnection httpConnection = (HttpURLConnection) connection;
-				httpConnection.setRequestMethod("GET");
-				httpConnection.connect();
-
-				if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-					stream = httpConnection.getInputStream();
-				}
-			}
-			catch (Exception ex) {
-				ex.printStackTrace();
-				System.out.println("downloadImage" + ex.toString());
-			}
-			return stream;
 		}
 	}
+
+	public class GroupsEntityUserTask extends AsyncTask<Void, Void, Boolean> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressDialog.show();
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			Vars.isConn = Serv.getGroupsEntity();
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			progressDialog.dismiss();
+			if (success && Vars.isConn) {
+				if (Vars.grupos != null) {
+					if (Util.isConnect(activity, activity.getLocalClassName())) {
+					}
+				}
+			} else {
+				Util.disconnectMessage(activity, activity.getLocalClassName());
+			}
+		}
+	}
+
+//	public class DownloadImagesTask extends AsyncTask<Void, Void, Bitmap> {
+//
+//		@Override
+//		protected Bitmap doInBackground(Void... params) {
+//
+//			try {
+//				if (new File(Util.pathMainFolfer  + File.separator + Util.usuario.getPicture()).exists()) {
+//					FileInputStream streamIn = new FileInputStream(Util.pathMainFolfer  + File.separator + Util.usuario.getNombreLogo());
+//					Util.logo = BitmapFactory.decodeStream(streamIn);
+//				} else {
+//
+//					Util.logo = download_Image(Util.picturesGLPI + Util.usuario.getPicture());
+//
+//					if (Util.logo == null) {
+//						Util.logo = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+//					}
+//
+////			Almacenamiento de bitmap
+//
+//					OutputStream fOutputStream;
+//					File file = new File(Util.pathMainFolfer, Util.usuario.getNombreLogo());
+//					fOutputStream = new FileOutputStream(file);
+//
+//					Util.logo.compress(Bitmap.CompressFormat.PNG, 100, fOutputStream);
+//
+//					fOutputStream.flush();
+//					fOutputStream.close();
+//
+//					MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
+//				}
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				//Toast.makeText(activity, "Save Failed", Toast.LENGTH_SHORT).show();
+//			}
+//
+//			return Util.logo;
+//		}
+//
+//		@Override
+//		protected void onPostExecute(Bitmap result) {
+//			if (result != null) {
+//				LeftSlidingMenuFragment.iv_fml_logo.setImageBitmap(result);
+//				Bitmap roundedCornersImage = ImageHelper.getRoundedCornerBitmap(result, 104);
+//				LeftSlidingMenuFragment.iv_fml_logo.setImageBitmap(roundedCornersImage);
+//			}
+//		}
+//
+//		private Bitmap download_Image(String url) {
+//			Bitmap bitmap = null;
+//			InputStream stream = null;
+//			BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//			bmOptions.inSampleSize = 1;
+//
+//			try {
+//				stream = getHttpConnection(url);
+//				if (stream != null) {
+//					bitmap = BitmapFactory.decodeStream(stream, null, bmOptions);
+//					stream.close();
+//				}
+//			}
+//			catch (IOException e1) {
+//				e1.printStackTrace();
+//				System.out.println("downloadImage"+ e1.toString());
+//			}
+//			return bitmap;
+//		}
+//
+//		public InputStream getHttpConnection(String urlString)  throws IOException {
+//
+//			InputStream stream = null;
+//			URL url = new URL(urlString);
+//			URLConnection connection = url.openConnection();
+//
+//			try {
+//				HttpURLConnection httpConnection = (HttpURLConnection) connection;
+//				httpConnection.setRequestMethod("GET");
+//				httpConnection.connect();
+//
+//				if (httpConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+//					stream = httpConnection.getInputStream();
+//				}
+//			}
+//			catch (Exception ex) {
+//				ex.printStackTrace();
+//				System.out.println("downloadImage" + ex.toString());
+//			}
+//			return stream;
+//		}
+//	}
 
 //	private void register(final String email, final String password){
 //
@@ -406,7 +464,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 				Log.d("Registration id", registrationId);
 
 				if (Util.isConnect(activity, activity.getLocalClassName())) {
-					new ObjetoLoginTask(documento, password, registrationId).execute((Void) null);
+					new LoginTask(activity, documento, password, registrationId).execute((Void) null);
 				}
 				//send this registrationId to your server
 			}
@@ -419,7 +477,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 				if (frag != null) {
 					manager.beginTransaction().remove(frag).commit();
 				}
-				DialogFragmentVal editNameDialog = new DialogFragmentVal(Vars.resCX, getString(R.string.login_connection_error), getString(R.string.login_connection_error_content),"Ok", getString(R.string.osa_vacio));
+				DialogFragmentVal editNameDialog = new DialogFragmentVal(Vars.resCX, getString(R.string.login_connection_error), getString(R.string.login_connection_error_content),"Ok", "");
 				editNameDialog.show(manager, getString(R.string.df_edit_name));
 
 //                ad.setMessage(getString(R.string.RegisterError));
@@ -476,7 +534,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
 		switch (requestCode) {
-			case PERMISSIONS_MULTIPLE_REQUEST:
+			case Vars.PERMISSIONS_MULTIPLE_REQUEST:
 				if (grantResults.length > 0) {
 					boolean cameraPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 					boolean readExternalFile = grantResults[0] == PackageManager.PERMISSION_GRANTED;
@@ -495,7 +553,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 											requestPermissions(
 													new String[]{Manifest.permission
 															.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
-													PERMISSIONS_MULTIPLE_REQUEST);
+													Vars.PERMISSIONS_MULTIPLE_REQUEST);
 										}
 									}
 								}).show();
@@ -527,7 +585,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 													Manifest.permission.WRITE_EXTERNAL_STORAGE,
 													Manifest.permission.CAMERA,
 													Manifest.permission.ACCESS_FINE_LOCATION
-											}, PERMISSIONS_MULTIPLE_REQUEST);
+											}, Vars.PERMISSIONS_MULTIPLE_REQUEST);
 								}
 							}
 						}).show();
@@ -537,8 +595,8 @@ public class MainActivity extends SlidingFragmentActivity implements
 							new String[]{
 									Manifest.permission.WRITE_EXTERNAL_STORAGE,
 									Manifest.permission.CAMERA,
-									Manifest.permission.ACCESS_FINE_LOCATION
-							}, PERMISSIONS_MULTIPLE_REQUEST);
+					 				Manifest.permission.ACCESS_FINE_LOCATION
+							}, Vars.PERMISSIONS_MULTIPLE_REQUEST);
 				}
 			}
 		} else {

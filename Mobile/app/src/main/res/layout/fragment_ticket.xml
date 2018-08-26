@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.ProyectoFragment">
+
+    <ListView
+        android:id="@+id/lv_ft_ticket"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/margin_small"/>
+
+</android.support.design.widget.CoordinatorLayout>

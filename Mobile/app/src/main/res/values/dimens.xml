@@ -4,7 +4,21 @@
     <dimen name="toolbar">56dp</dimen>
     <dimen name="slidingmenu_offset">60dp</dimen>
 
-
     <dimen name="dim_account_menu">48dp</dimen>
     <dimen name="dim_space_between">8dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="margin_notification">-20dp</dimen>
+    <dimen name="margin_elevation">3dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_medium_x">24dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_large_x">40dp</dimen>
+    <dimen name="margin_menu">48dp</dimen>
+    <dimen name="margin_toolbar">56dp</dimen>
+    <dimen name="margin_huge">64dp</dimen>
+    <dimen name="margin_ib">72dp</dimen>
 </resources>

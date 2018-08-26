@@ -48,11 +48,11 @@ public class MenuItemList extends LinearLayout {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setSelected(boolean select){
         if (select){
-            tv_ti.setTextColor(getResources().getColor(R.color.colorPrimary));
-            iv_ti.getDrawable().setTint(getResources().getColor(R.color.colorPrimary));
-        } else {
             tv_ti.setTextColor(getResources().getColor(R.color.white));
             iv_ti.getDrawable().setTint(getResources().getColor(R.color.white));
+        } else {
+            tv_ti.setTextColor(getResources().getColor(R.color.negro));
+            iv_ti.getDrawable().setTint(getResources().getColor(R.color.negro));
         }
     }
 

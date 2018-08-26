@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:orientation="vertical"
-    android:background="@color/material_blue_grey_900"
+    android:background="@color/white"
     android:gravity="center_horizontal"
     android:focusable="true"
     android:fitsSystemWindows="true" >

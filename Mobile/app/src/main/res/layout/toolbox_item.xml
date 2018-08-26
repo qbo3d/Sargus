@@ -15,6 +15,7 @@
         android:layout_marginLeft="@dimen/dim_space_between"
         android:layout_marginStart="@dimen/dim_space_between"
         android:padding="@dimen/dim_space_between"
+        android:tint="@color/negro"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -23,7 +24,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Inicio"
-        android:textColor="@color/white"
+        android:textColor="@color/negro"
         android:textSize="16.0sp"
         android:layout_gravity="center_vertical"
         android:paddingLeft="@dimen/dim_space_between"
