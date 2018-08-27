@@ -2,11 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "com.qbo3d.sargus"
         minSdkVersion 21
-        targetSdkVersion 22
+        targetSdkVersion 27
         versionCode 1
         versionName "1.01"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -38,7 +39,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //JSON
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     //Barcode
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     //Serv de servicios
