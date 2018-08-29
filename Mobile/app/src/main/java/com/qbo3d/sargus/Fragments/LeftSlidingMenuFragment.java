@@ -22,6 +22,7 @@ import com.qbo3d.sargus.R;
 public class LeftSlidingMenuFragment extends Fragment {
 
 	private RelativeLayout rl_fml_proyecto;
+	private MenuItemList mil_scanning;
 	private MenuItemList mil_ticket;
 	private MenuItemList mil_item;
 	private MenuItemList mil_captura;
@@ -42,6 +43,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_main_left, container,false);
 
 		rl_fml_proyecto = view.findViewById(R.id.rl_fml_proyecto);
+		mil_scanning = view.findViewById(R.id.mil_scanning);
 		mil_ticket = view.findViewById(R.id.mil_ticket);
 		mil_item = view.findViewById(R.id.mil_item);
 		mil_captura = view.findViewById(R.id.mil_captura);
@@ -49,9 +51,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 		tv_fml_usuario = view.findViewById(R.id.tv_fml_usuario);
 		tv_fml_proyecto = view.findViewById(R.id.tv_fml_proyecto);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			mil_ticket.setSelected(true);
-		}
+        mil_ticket.setSelected(true);
 
 		rl_fml_proyecto.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -64,27 +64,39 @@ public class LeftSlidingMenuFragment extends Fragment {
 		mil_ticket.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-					mil_ticket.setSelected(true);
-					mil_item.setSelected(false);
-					mil_captura.setSelected(false);
-					mil_logout.setSelected(false);
-				}
+				mil_ticket.setSelected(true);
+				mil_scanning.setSelected(false);
+				mil_item.setSelected(false);
+				mil_captura.setSelected(false);
+				mil_logout.setSelected(false);
 
 				MainActivity.tv_tm_title.setText(mil_ticket.getText());
 				switchFragment(getActivity(), new TicketFragment());
 			}
 		});
 
+		mil_scanning.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mil_ticket.setSelected(false);
+				mil_scanning.setSelected(true);
+				mil_item.setSelected(false);
+				mil_captura.setSelected(false);
+				mil_logout.setSelected(false);
+
+				MainActivity.tv_tm_title.setText(mil_scanning.getText());
+				switchFragment(getActivity(), new ScanningFragment());
+			}
+		});
+
 		mil_item.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-					mil_ticket.setSelected(false);
-					mil_item.setSelected(true);
-					mil_captura.setSelected(false);
-					mil_logout.setSelected(false);
-				}
+				mil_ticket.setSelected(false);
+				mil_scanning.setSelected(false);
+				mil_item.setSelected(true);
+				mil_captura.setSelected(false);
+				mil_logout.setSelected(false);
 
 				MainActivity.tv_tm_title.setText(mil_item.getText());
 				switchFragment(getActivity(), new ItemFragment());
@@ -94,12 +106,11 @@ public class LeftSlidingMenuFragment extends Fragment {
 		mil_captura.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-					mil_ticket.setSelected(false);
-					mil_item.setSelected(false);
-					mil_captura.setSelected(true);
-					mil_logout.setSelected(false);
-				}
+				mil_ticket.setSelected(false);
+				mil_scanning.setSelected(false);
+				mil_item.setSelected(false);
+				mil_captura.setSelected(true);
+				mil_logout.setSelected(false);
 
 				MainActivity.tv_tm_title.setText(mil_captura.getText());
 				switchFragment(getActivity(), new CapturaFragment());
@@ -109,12 +120,11 @@ public class LeftSlidingMenuFragment extends Fragment {
 		mil_logout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-					mil_ticket.setSelected(false);
-					mil_item.setSelected(false);
-					mil_captura.setSelected(false);
-					mil_logout.setSelected(true);
-				}
+				mil_ticket.setSelected(false);
+				mil_scanning.setSelected(false);
+				mil_item.setSelected(false);
+				mil_captura.setSelected(false);
+				mil_logout.setSelected(true);
 
 				MainActivity.tv_tm_title.setText(mil_logout.getText());
 				callLogin();

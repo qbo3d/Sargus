@@ -58,23 +58,16 @@ public class LoginActivity extends FragmentActivity {
         progressDialog.setMessage(getString(R.string.pd_cargando));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Intent intent = new Intent();
-            String packageName = getPackageName();
-            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + packageName));
-                startActivity(intent);
-            }
+        Intent intent = new Intent();
+        String packageName = getPackageName();
+        PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+        if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + packageName));
+            startActivity(intent);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkPermission();
-
-        } else {
-            // write your logic here
-        }
+        checkPermission();
 
         mEmailView = findViewById(R.id.email);
 //        populateAutoComplete();
@@ -116,25 +109,21 @@ public class LoginActivity extends FragmentActivity {
                         new OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    requestPermissions(
-                                            new String[]{
-                                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                                    Manifest.permission.CAMERA,
-                                                    Manifest.permission.ACCESS_FINE_LOCATION
-                                            }, Vars.PERMISSIONS_MULTIPLE_REQUEST);
-                                }
+                                requestPermissions(
+                                        new String[]{
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                Manifest.permission.CAMERA,
+                                                Manifest.permission.ACCESS_FINE_LOCATION
+                                        }, Vars.PERMISSIONS_MULTIPLE_REQUEST);
                             }
                         }).show();
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(
-                            new String[]{
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.CAMERA,
-                                    Manifest.permission.ACCESS_FINE_LOCATION
-                            }, Vars.PERMISSIONS_MULTIPLE_REQUEST);
-                }
+                requestPermissions(
+                        new String[]{
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                        }, Vars.PERMISSIONS_MULTIPLE_REQUEST);
             }
         } else {
             // write your logic code if permission already granted
@@ -241,12 +230,10 @@ public class LoginActivity extends FragmentActivity {
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                            requestPermissions(
-                                                    new String[]{Manifest.permission
-                                                            .READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
-                                                    Vars.PERMISSIONS_MULTIPLE_REQUEST);
-                                        }
+                                        requestPermissions(
+                                                new String[]{Manifest.permission
+                                                        .READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                                                Vars.PERMISSIONS_MULTIPLE_REQUEST);
                                     }
                                 }).show();
                     }

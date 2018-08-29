@@ -72,6 +72,14 @@
                 custom:tint="@color/negro" />
 
             <com.qbo3d.sargus.CustomControls.MenuItemList
+                android:id="@+id/mil_scanning"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                custom:text = "@string/lsm_scanning"
+                custom:src="@android:drawable/ic_menu_search"
+                custom:tint="@color/negro" />
+
+            <com.qbo3d.sargus.CustomControls.MenuItemList
                 android:id="@+id/mil_item"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"

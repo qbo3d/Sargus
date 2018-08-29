@@ -26,8 +26,9 @@
 
     <!-- Strings related to LeftSlidingMenu -->
     <string name="lsm_proyecto">Proyecto</string>
-    <string name="lsm_ticket">Incidencia</string>
-    <string name="lsm_item">Blindobarra</string>
+    <string name="lsm_ticket">Incidencias</string>
+    <string name="lsm_scanning">Escanear modulos</string>
+    <string name="lsm_item">Blindobarras</string>
     <string name="lsm_captura">Ingresar ítem</string>
     <string name="lsm_logout">Cerrar sesión</string>
 

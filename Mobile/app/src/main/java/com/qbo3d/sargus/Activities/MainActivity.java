@@ -26,14 +26,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.qbo3d.sargus.DialogFragment.DialogFragmentVal;
-import com.qbo3d.sargus.Fragments.ItemFragment;
 import com.qbo3d.sargus.Fragments.LeftSlidingMenuFragment;
+import com.qbo3d.sargus.Fragments.ScanningFragment;
 import com.qbo3d.sargus.Fragments.TicketFragment;
 import com.qbo3d.sargus.Objects.Usuario;
 import com.qbo3d.sargus.R;
@@ -60,29 +59,22 @@ public class MainActivity extends SlidingFragmentActivity implements
 	public static Button bt_tm_off;
 	public static ProgressBar pb_tm_indicador;
 
-	private Activity activity;
+	private Activity mActivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			Intent intent = new Intent();
-			String packageName = getPackageName();
-			PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-			if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-				intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-				intent.setData(Uri.parse("package:" + packageName));
-				startActivity(intent);
-			}
+		Intent intent = new Intent();
+		String packageName = getPackageName();
+		PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+		if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+			intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+			intent.setData(Uri.parse("package:" + packageName));
+			startActivity(intent);
 		}
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			checkPermission();
-
-		} else {
-			// write your logic here
-		}
+		checkPermission();
 
 		progressDialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
 		progressDialog.setCancelable(false);
@@ -92,7 +84,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 		initLeftRightSlidingMenu();
 		setContentView(R.layout.activity_main);
 
-		activity = this;
+		mActivity = this;
 
 		Util.createFolders(this);
 
@@ -129,7 +121,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 	}
 
 	private void callScanning() {
-		Intent intent = new Intent(this, ScanningActivity.class);
+		Intent intent = new Intent(this, ScanningFragment.class);
 		startActivity(intent);
 	}
 
@@ -234,7 +226,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 			String objetoLogin = Util.getStorageString(getBaseContext(), "objeto_login");
 
 			if (objetoLogin == null || objetoLogin.equals("")) {
-				Vars.isConn = Serv.getLogin(activity, mDocumento, mPassword, mId);
+				Vars.isConn = Serv.getLogin(mActivity, mDocumento, mPassword, mId);
 			} else {
 				Vars.isConn = true;
 				Gson gson = new Gson();
@@ -248,14 +240,14 @@ public class MainActivity extends SlidingFragmentActivity implements
 			progressDialog.dismiss();
 			if (success && Vars.isConn) {
 				if (Vars.usuario != null) {
-					if (Util.isConnect(activity, activity.getLocalClassName())) {
+					if (Util.isConnect(mActivity, mActivity.getLocalClassName())) {
 						new AllTicketTask().execute();
 					}
 					LeftSlidingMenuFragment.tv_fml_usuario.setText(Vars.usuario.getNombre());
 					LeftSlidingMenuFragment.tv_fml_proyecto.setText(Vars.usuario.getEntidad());
 				}
 			} else {
-				Util.disconnectMessage(activity, activity.getLocalClassName());
+				Util.disconnectMessage(mActivity, mActivity.getLocalClassName());
 			}
 		}
 	}
@@ -284,13 +276,13 @@ public class MainActivity extends SlidingFragmentActivity implements
 			progressDialog.dismiss();
 			if (success && Vars.isConn) {
 				if (Vars.allTicket != null) {
-					if (Util.isConnect(activity, activity.getLocalClassName())) {
+					if (Util.isConnect(mActivity, mActivity.getLocalClassName())) {
 						new EntitiesUserTask().execute();
-						Util.cargarAllTickets(activity, TicketFragment.lv_ft_ticket, R.layout.itemlist_ticket, Util.ticketListToData());
+						Util.cargarAllTickets(mActivity, TicketFragment.lv_ft_ticket, R.layout.itemlist_ticket, Util.ticketListToData());
 					}
 				}
 			} else {
-				Util.disconnectMessage(activity, activity.getLocalClassName());
+				Util.disconnectMessage(mActivity, mActivity.getLocalClassName());
 			}
 		}
 	}
@@ -314,12 +306,12 @@ public class MainActivity extends SlidingFragmentActivity implements
 			progressDialog.dismiss();
 			if (success && Vars.isConn) {
 				if (Vars.entidad != null) {
-					if (Util.isConnect(activity, activity.getLocalClassName())) {
+					if (Util.isConnect(mActivity, mActivity.getLocalClassName())) {
 						new GroupsEntityUserTask().execute();
 					}
 				}
 			} else {
-				Util.disconnectMessage(activity, activity.getLocalClassName());
+				Util.disconnectMessage(mActivity, mActivity.getLocalClassName());
 			}
 		}
 	}
@@ -343,11 +335,11 @@ public class MainActivity extends SlidingFragmentActivity implements
 			progressDialog.dismiss();
 			if (success && Vars.isConn) {
 				if (Vars.grupos != null) {
-					if (Util.isConnect(activity, activity.getLocalClassName())) {
+					if (Util.isConnect(mActivity, mActivity.getLocalClassName())) {
 					}
 				}
 			} else {
-				Util.disconnectMessage(activity, activity.getLocalClassName());
+				Util.disconnectMessage(mActivity, mActivity.getLocalClassName());
 			}
 		}
 	}
@@ -479,8 +471,8 @@ public class MainActivity extends SlidingFragmentActivity implements
 //                mProgressView.dismiss();
 				Log.d("Registration id", registrationId);
 
-				if (Util.isConnect(activity, activity.getLocalClassName())) {
-					new LoginTask(activity, documento, password, registrationId).execute((Void) null);
+				if (Util.isConnect(mActivity, mActivity.getLocalClassName())) {
+					new LoginTask(mActivity, documento, password, registrationId).execute((Void) null);
 				}
 				//send this registrationId to your server
 			}
@@ -506,6 +498,12 @@ public class MainActivity extends SlidingFragmentActivity implements
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == ScanningFragment.ENABLE_BT_REQUEST_ID) {
+			if (resultCode == Activity.RESULT_CANCELED) {
+				ScanningFragment.btDisabled(mActivity);
+			}
+		}
 
 //		if (resultCode == Vars.resOS){
 //			if (Util.isConnect(activity)) {
@@ -565,12 +563,10 @@ public class MainActivity extends SlidingFragmentActivity implements
 								new View.OnClickListener() {
 									@Override
 									public void onClick(View v) {
-										if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 											requestPermissions(
 													new String[]{Manifest.permission
 															.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
 													Vars.PERMISSIONS_MULTIPLE_REQUEST);
-										}
 									}
 								}).show();
 					}
