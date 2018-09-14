@@ -27,7 +27,10 @@ public class Vars {
 
 //    public static Bitmap logo = null;
 
+//    Result Codes
     public final static int resCX = 88;
+    public final static int resBC = 66;//reult Bar Code
+
     public static Usuario usuario = null;
     public static Ticket[] allTicket = null;
     public static Entity entidad = null;

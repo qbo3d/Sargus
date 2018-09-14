@@ -37,13 +37,14 @@
             android:theme="@style/AppThem.NoActionBar.Fullscreen"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".Fragments.ScanningFragment"
-            android:screenOrientation="portrait"
-            tools:ignore="InnerclassSeparator" />
-        <activity
             android:name=".Activities.PeripheralActivity"
             android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".Utilities.CaptureActivityPortrait"
+            android:screenOrientation="portrait"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
     </application>
 
 </manifest>

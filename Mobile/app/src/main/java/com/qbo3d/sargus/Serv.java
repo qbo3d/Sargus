@@ -1,4 +1,4 @@
-package com.qbo3d.sargus.Utilities;
+package com.qbo3d.sargus;
 
 import android.app.Activity;
 

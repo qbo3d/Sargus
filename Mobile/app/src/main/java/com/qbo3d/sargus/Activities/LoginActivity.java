@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
@@ -29,7 +28,7 @@ import android.widget.TextView;
 import com.qbo3d.sargus.R;
 import com.qbo3d.sargus.Util;
 import com.qbo3d.sargus.Utilities.GCMClientManager;
-import com.qbo3d.sargus.Utilities.Serv;
+import com.qbo3d.sargus.Serv;
 import com.qbo3d.sargus.Vars;
 
 /**

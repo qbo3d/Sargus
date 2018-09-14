@@ -26,6 +26,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 	private MenuItemList mil_ticket;
 	private MenuItemList mil_item;
 	private MenuItemList mil_captura;
+	private MenuItemList mil_barcode;
 	private MenuItemList mil_logout;
 	public static TextView tv_fml_usuario;
 	public static TextView tv_fml_proyecto;
@@ -47,6 +48,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 		mil_ticket = view.findViewById(R.id.mil_ticket);
 		mil_item = view.findViewById(R.id.mil_item);
 		mil_captura = view.findViewById(R.id.mil_captura);
+		mil_barcode = view.findViewById(R.id.mil_barcode);
 		mil_logout = view.findViewById(R.id.mil_logout);
 		tv_fml_usuario = view.findViewById(R.id.tv_fml_usuario);
 		tv_fml_proyecto = view.findViewById(R.id.tv_fml_proyecto);
@@ -68,6 +70,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 				mil_scanning.setSelected(false);
 				mil_item.setSelected(false);
 				mil_captura.setSelected(false);
+				mil_barcode.setSelected(false);
 				mil_logout.setSelected(false);
 
 				MainActivity.tv_tm_title.setText(mil_ticket.getText());
@@ -82,6 +85,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 				mil_scanning.setSelected(true);
 				mil_item.setSelected(false);
 				mil_captura.setSelected(false);
+				mil_barcode.setSelected(false);
 				mil_logout.setSelected(false);
 
 				MainActivity.tv_tm_title.setText(mil_scanning.getText());
@@ -96,6 +100,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 				mil_scanning.setSelected(false);
 				mil_item.setSelected(true);
 				mil_captura.setSelected(false);
+				mil_barcode.setSelected(false);
 				mil_logout.setSelected(false);
 
 				MainActivity.tv_tm_title.setText(mil_item.getText());
@@ -110,10 +115,26 @@ public class LeftSlidingMenuFragment extends Fragment {
 				mil_scanning.setSelected(false);
 				mil_item.setSelected(false);
 				mil_captura.setSelected(true);
+				mil_barcode.setSelected(false);
 				mil_logout.setSelected(false);
 
 				MainActivity.tv_tm_title.setText(mil_captura.getText());
 				switchFragment(getActivity(), new CapturaFragment());
+			}
+		});
+
+		mil_barcode.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mil_ticket.setSelected(false);
+				mil_scanning.setSelected(false);
+				mil_item.setSelected(false);
+				mil_captura.setSelected(false);
+				mil_barcode.setSelected(true);
+				mil_logout.setSelected(false);
+
+				MainActivity.tv_tm_title.setText(mil_barcode.getText());
+				switchFragment(getActivity(), new BarcodeFragment());
 			}
 		});
 
@@ -124,6 +145,7 @@ public class LeftSlidingMenuFragment extends Fragment {
 				mil_scanning.setSelected(false);
 				mil_item.setSelected(false);
 				mil_captura.setSelected(false);
+				mil_barcode.setSelected(false);
 				mil_logout.setSelected(true);
 
 				MainActivity.tv_tm_title.setText(mil_logout.getText());

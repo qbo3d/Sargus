@@ -96,6 +96,14 @@
                 custom:tint="@color/negro" />
 
             <com.qbo3d.sargus.CustomControls.MenuItemList
+                android:id="@+id/mil_barcode"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                custom:text = "@string/lsm_captura"
+                custom:src="@drawable/ic_input_24"
+                custom:tint="@color/negro" />
+
+            <com.qbo3d.sargus.CustomControls.MenuItemList
                 android:id="@+id/mil_logout"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"

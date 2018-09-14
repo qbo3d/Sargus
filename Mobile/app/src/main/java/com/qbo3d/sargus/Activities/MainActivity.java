@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -26,19 +27,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.qbo3d.sargus.DialogFragment.DialogFragmentVal;
+import com.qbo3d.sargus.Fragments.BarcodeFragment;
 import com.qbo3d.sargus.Fragments.LeftSlidingMenuFragment;
 import com.qbo3d.sargus.Fragments.ScanningFragment;
 import com.qbo3d.sargus.Fragments.TicketFragment;
 import com.qbo3d.sargus.Objects.Usuario;
 import com.qbo3d.sargus.R;
 import com.qbo3d.sargus.Util;
+import com.qbo3d.sargus.Utilities.CaptureActivityPortrait;
 import com.qbo3d.sargus.Utilities.GCMClientManager;
-import com.qbo3d.sargus.Utilities.Serv;
+import com.qbo3d.sargus.Serv;
 import com.qbo3d.sargus.Vars;
 
 public class MainActivity extends SlidingFragmentActivity implements
@@ -54,6 +59,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 	public static View mFragmentFormView;
 
 	public static ProgressDialog progressDialog;
+	private IntentIntegrator integrator;
 
 	public static Button bt_tm_on;
 	public static Button bt_tm_off;
@@ -542,6 +548,19 @@ public class MainActivity extends SlidingFragmentActivity implements
 //					Toast.makeText(this, "Operación cancelada", Toast.LENGTH_LONG).show();
 //				}
 //		}
+
+		if (requestCode == IntentIntegrator.REQUEST_CODE) {
+			if (data != null) {
+				String contents = data.getStringExtra("SCAN_RESULT").replace("\n", "");
+
+//				if (Vars.resBC){
+				Toast.makeText(this, "Código escaneado: " + contents, Toast.LENGTH_LONG).show();
+
+				BarcodeFragment.et_ab_texto.setText(contents);
+			} else {
+				Toast.makeText(this, "Operación cancelada", Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 
 	@Override
@@ -613,6 +632,29 @@ public class MainActivity extends SlidingFragmentActivity implements
 			}
 		} else {
 			// write your logic code if permission already granted
+		}
+	}
+
+	public void ScanBarcode() {
+		try {
+
+			//start the scanning activity from the com.google.zxing.client.android.SCAN intent
+			integrator = new IntentIntegrator(this);
+			integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+			integrator.setPrompt("ScanBarcode");
+			integrator.setCameraId(0);  // Use a specific camera of the device
+			integrator.setBeepEnabled(true);
+			integrator.setOrientationLocked(true);
+			integrator.setCaptureActivity(CaptureActivityPortrait.class);
+			integrator.initiateScan();
+
+
+        /*Intent intent = new Intent(ACTION_SCAN);
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        startActivityForResult(intent, 0);*/
+		} catch (ActivityNotFoundException anfe) {
+			//on catch, show the download dialog
+			Toast.makeText(this, "Algo esta mal", Toast.LENGTH_SHORT).show();
 		}
 	}
 
