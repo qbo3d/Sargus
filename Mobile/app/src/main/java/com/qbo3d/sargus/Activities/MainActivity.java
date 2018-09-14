@@ -36,7 +36,6 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.qbo3d.sargus.DialogFragment.DialogFragmentVal;
 import com.qbo3d.sargus.Fragments.BarcodeFragment;
 import com.qbo3d.sargus.Fragments.LeftSlidingMenuFragment;
-import com.qbo3d.sargus.Fragments.ScanningFragment;
 import com.qbo3d.sargus.Fragments.TicketFragment;
 import com.qbo3d.sargus.Objects.Usuario;
 import com.qbo3d.sargus.R;
