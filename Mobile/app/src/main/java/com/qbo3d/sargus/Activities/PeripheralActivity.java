@@ -62,7 +62,7 @@ public class PeripheralActivity extends Activity implements BleWrapperUiCallback
     public void uiDeviceConnected(final BluetoothGatt gatt,
 			                      final BluetoothDevice device)
     {
-    	runOnUiThread(new Runnable() {
+		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				mDeviceStatus.setText("connected");
