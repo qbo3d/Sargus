@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "247611109193",
+    "firebase_url": "https://sargus-4ba51.firebaseio.com",
+    "project_id": "sargus-4ba51",
+    "storage_bucket": "sargus-4ba51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247611109193:android:40f91cde3e85624c",
+        "android_client_info": {
+          "package_name": "com.qbo3d.sargus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247611109193-lt4puc0k7c0vc5adk4hlt1naed9kthhv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qbo3d.sargus",
+            "certificate_hash": "f0d8aaa2c65869cbc081c64023799cd0d24e5285"
+          }
+        },
+        {
+          "client_id": "247611109193-k4odb1prodtkaqqqbul852u47nf4lkcs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoS7xASP7a5ElMxxKirsn25Bu7h6AhOlc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247611109193-k4odb1prodtkaqqqbul852u47nf4lkcs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "247611109193-cv9fsfviooijp7l19a4k19rklnt68ggd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.qbo3d.sargus"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
