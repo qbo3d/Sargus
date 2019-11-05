@@ -1,0 +1,23 @@
+{
+  "name": "sargus-cli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Simple IoT platform - CLI",
+  "bin": "sargus.js",
+  "scripts": {
+    "lint": "standard"
+  },
+  "keywords": [
+    "IoT"
+  ],
+  "author": "Sergio Mesa",
+  "license": "MIT",
+  "dependencies": {
+    "args": "^5.0.1",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.8.16",
+    "minimist": "^1.2.0",
+    "moment": "^2.18.1",
+    "sargus-agent": "file:../sargus-agent"
+  }
+}

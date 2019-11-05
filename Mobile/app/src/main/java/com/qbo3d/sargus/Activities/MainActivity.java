@@ -1,6 +1,7 @@
 package com.qbo3d.sargus.Activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -13,11 +14,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -42,7 +43,6 @@ import com.qbo3d.sargus.Objects.Usuario;
 import com.qbo3d.sargus.R;
 import com.qbo3d.sargus.Util;
 import com.qbo3d.sargus.Utilities.CaptureActivityPortrait;
-import com.qbo3d.sargus.Utilities.GCMClientManager;
 import com.qbo3d.sargus.Serv;
 import com.qbo3d.sargus.Vars;
 
@@ -207,18 +207,17 @@ public class MainActivity extends SlidingFragmentActivity implements
 		}
 	}
 
+	@SuppressLint("StaticFieldLeak")
 	public class LoginTask extends AsyncTask<Void, Void, Boolean> {
 
 		private Activity mActivity;
 		private final String mDocumento;
 		private final String mPassword;
-		private final String mId;
 
-		LoginTask(Activity activity, String documento, String password, String Id) {
+		LoginTask(Activity activity, String documento, String password) {
 			mActivity = activity;
 			mDocumento = documento;
 			mPassword = password;
-			mId = Id;
 		}
 
 		@Override
@@ -232,7 +231,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 			String objetoLogin = Util.getStorageString(getBaseContext(), "objeto_login");
 
 			if (objetoLogin == null || objetoLogin.equals("")) {
-				Vars.isConn = Serv.getLogin(mActivity, mDocumento, mPassword, mId);
+				Vars.isConn = Serv.getLogin(mActivity, mDocumento, mPassword);
 			} else {
 				Vars.isConn = true;
 				Gson gson = new Gson();
@@ -470,35 +469,13 @@ public class MainActivity extends SlidingFragmentActivity implements
 
 	private void register(final String documento, final String password) {
 
-		GCMClientManager pushClientManager = new GCMClientManager(this, getResources().getString(R.string.gcm_defaultSenderId));
-		pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
-			@Override
-			public void onSuccess(String registrationId, boolean isNewRegistration) {
-//                mProgressView.dismiss();
-				Log.d("Registration id", registrationId);
 
 				if (Util.isConnect(mActivity, mActivity.getLocalClassName())) {
-					new LoginTask(mActivity, documento, password, registrationId).execute((Void) null);
+					new LoginTask(mActivity, documento, password).execute((Void) null);
 				}
 				//send this registrationId to your server
-			}
 
-			@Override
-			public void onFailure(String ex) {
-				super.onFailure(ex);
-				android.app.FragmentManager manager = getFragmentManager();
-				android.app.Fragment frag = manager.findFragmentByTag(getString(R.string.df_edit_name));
-				if (frag != null) {
-					manager.beginTransaction().remove(frag).commit();
-				}
-				DialogFragmentVal editNameDialog = new DialogFragmentVal(Vars.resCX, getString(R.string.login_connection_error), getString(R.string.login_connection_error_content),"Ok", "");
-				editNameDialog.show(manager, getString(R.string.df_edit_name));
 
-//                ad.setMessage(getString(R.string.RegisterError));
-//                ad.show();
-//                progressBar.dismiss();
-			}
-		});
 	}
 
 	@Override

@@ -5,12 +5,12 @@
   "description": "Sargus IoT platform - MQTT Module",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node server.js",
-    "start-dev": "DEBUG=sargus:* nodemon server.js",
+    "fix": "standard --fix",
     "lint": "standard",
-    "fix": "standard --fix"
+    "start": "NODE_ENV=production node server.js",
+    "start-dev": "DEBUG=sargus:* nodemon server.js"
   },
-  "author": "Sergio Mesa",
+  "author": "Sergio Mesa <sergio@qbo3d.com>",
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^1.18.11",

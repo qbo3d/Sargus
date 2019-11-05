@@ -25,7 +25,7 @@ public class Serv {
      * @param documento lo que recibe
      * @param password lo que recibe
      */
-    public static boolean getLogin(Activity activity, String documento, String password, String id){
+    public static boolean getLogin(Activity activity, String documento, String password){
         boolean res = false;
         LoginClient client = Vars.retrofitCI.create(LoginClient.class);
         Call<Usuario> call = client.getLogin(documento, password);

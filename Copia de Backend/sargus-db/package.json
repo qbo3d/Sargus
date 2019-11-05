@@ -1,0 +1,25 @@
+{
+  "name": "sargus-db",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sargus IoT platform - DB Module",
+  "main": "index.js",
+  "scripts": {
+    "fix": "standard --fix",
+    "lint": "standard",
+    "setup": "DEBUG=sargus:* node setup.js"
+  },
+  "author": "Sergio Mesa <sergio@qbo3d.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "debug": "^4.1.1",
+    "inquirer": "^6.3.1",
+    "minimist": "^1.2.0",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.3.5"
+  }
+}

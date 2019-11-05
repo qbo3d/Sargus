@@ -11,10 +11,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,7 +30,6 @@ import android.widget.TextView;
 
 import com.qbo3d.sargus.R;
 import com.qbo3d.sargus.Util;
-import com.qbo3d.sargus.Utilities.GCMClientManager;
 import com.qbo3d.sargus.Serv;
 import com.qbo3d.sargus.Vars;
 
@@ -98,9 +100,9 @@ public class LoginActivity extends FragmentActivity {
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale (this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale (this, Manifest.permission.CAMERA) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale (this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
 
                 Snackbar.make(this.findViewById(android.R.id.content),
                         "Faltan permisos por habilitar",
@@ -180,7 +182,7 @@ public class LoginActivity extends FragmentActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 
-            register(this, email,password);
+            register(this, email, password);
         }
     }
 
@@ -219,8 +221,7 @@ public class LoginActivity extends FragmentActivity {
                     boolean cameraPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                     boolean readExternalFile = grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
-                    if(cameraPermission && readExternalFile)
-                    {
+                    if (cameraPermission && readExternalFile) {
                         // write your logic here
                     } else {
                         Snackbar.make(this.findViewById(android.R.id.content),
@@ -247,18 +248,16 @@ public class LoginActivity extends FragmentActivity {
         private Activity mActivity;
         private final String mEmail;
         private final String mPassword;
-        private final String mId;
 
-        LoginTask(Activity activity, String email, String password, String Id) {
+        LoginTask(Activity activity, String email, String password) {
             mActivity = activity;
             mEmail = email;
             mPassword = password;
-            mId = Id;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Vars.isConn = Serv.getLogin(mActivity, mEmail, mPassword, mId);
+            Vars.isConn = Serv.getLogin(mActivity, mEmail, mPassword);
             return true;
         }
 
@@ -276,7 +275,7 @@ public class LoginActivity extends FragmentActivity {
             } else if (!Vars.isConn) {
                 mPasswordView.setError(getString(R.string.login_connection_error_content));
                 mPasswordView.requestFocus();
-            } else if (Vars.usuario.getId() == null){
+            } else if (Vars.usuario.getId() == null) {
                 mPasswordView.setError(getString(R.string.login_error_incorrect_password));
                 mPasswordView.requestFocus();
             }
@@ -289,29 +288,15 @@ public class LoginActivity extends FragmentActivity {
         finish();
     }
 
-    private void register(final Activity activity, final String email, final String password){
+    private void register(final Activity activity, final String email, final String password) {
 
-        GCMClientManager pushClientManager = new GCMClientManager(LoginActivity.this, getResources().getString(R.string.gcm_defaultSenderId));
-        pushClientManager.registerIfNeeded(new GCMClientManager.RegistrationCompletedHandler() {
-            @Override
-            public void onSuccess(String registrationId, boolean isNewRegistration) {
-                if (Util.isConnect(activity, activity.getLocalClassName())) {
-                    new LoginTask(activity, email, password, registrationId).execute((Void) null);
-                } else {
-                    mPasswordView.setError(getString(R.string.login_connection_error));
-                    mPasswordView.requestFocus();
-                    progressDialog.dismiss();
-                }
-            }
+        if (Util.isConnect(activity, activity.getLocalClassName())) {
+            new LoginTask(activity, email, password).execute((Void) null);
+        } else {
+            mPasswordView.setError(getString(R.string.login_connection_error));
+            mPasswordView.requestFocus();
+            progressDialog.dismiss();
+        }
 
-            @Override
-            public void onFailure(String ex) {
-                super.onFailure(ex);
-
-                mPasswordView.setError(getString(R.string.login_connection_error));
-                mPasswordView.requestFocus();
-                progressDialog.dismiss();
-            }
-        });
     }
 }

@@ -5,7 +5,7 @@
 
     <!-- Sistema -->
     <string name="file_wrong">Ocurrio un error al crear el archivo</string>
-    <string name="gcm_defaultSenderId">529159743009</string>
+<!--    <string name="gcm_defaultSenderId">529159743009</string>-->
 
     <!-- Strings related to login -->
     <string name="login_usuario">Usuario</string>
@@ -31,5 +31,6 @@
     <string name="lsm_item">Blindobarras</string>
     <string name="lsm_captura">Ingresar ítem</string>
     <string name="lsm_logout">Cerrar sesión</string>
+    <string name="default_notification_channel_id">default_notification</string>
 
 </resources>

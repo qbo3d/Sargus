@@ -1,0 +1,29 @@
+{
+  "name": "sargus-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sargus IoT platform - API Module",
+  "main": "server.js",
+  "scripts": {
+    "fix": "standard --fix",
+    "lint": "standard",
+    "start": "NODE_ENV=production node server.js",
+    "start-dev": "DEBUG=sargus:* nodemon server.js"
+  },
+  "author": "Sergio Mesa <sergio@qbo3d.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.18.11",
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "express-asyncify": "^1.0.0",
+    "express-jwt": "^5.3.1",
+    "express-jwt-permissions": "^1.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "sargus-db": "file:../sargus-db"
+  }
+}

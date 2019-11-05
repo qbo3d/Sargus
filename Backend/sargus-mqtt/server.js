@@ -5,9 +5,11 @@ const mosca = require('mosca')
 const redis = require('redis')
 const chalk = require('chalk')
 const db = require('sargus-db')
-const config = require('../sargus-db/config-db')(false)
+const config = require('../sargus-tools/config').config_db(false)
 
-const { parsePayload } = require('./utils')
+const { handleError } = require('../sargus-tools/utils')
+const { handleFatalError } = require('../sargus-tools/utils')
+const { parsePayload } = require('../sargus-tools/utils')
 
 const backend = {
   type: 'redis',
@@ -19,15 +21,6 @@ const settings = {
   port: 1883,
   backend
 }
-
-// const config = {
-//     database: process.env.DB_NAME || 'sargus',
-//     username: process.env.DB_USER || 'qbo3d',
-//     password: process.env.DB_PASS || '.Sargus123.*',
-//     host: process.env.DB_HOST || 'localhost',
-//     dialect: 'mysql',
-//     loggin: s => debug(s)
-// }
 
 const server = new mosca.Server(settings)
 const clients = new Map()
@@ -41,18 +34,19 @@ server.on('clientConnected', client => {
 
 server.on('clientDisconnected', async (client) => {
   debug(`Client Disconnected: ${client.id}`)
-  const agent = client.get(client.id)
+  const agent = clients.get(client.id)
 
   if (agent) {
     // Mark Agent as Disconnected
     agent.connected = false
+
     try {
       await Agent.createOrUpdate(agent)
     } catch (e) {
       return handleError(e)
     }
 
-    // Delete client from clients list
+    // Delete Agent from Clients List
     clients.delete(client.id)
 
     server.publish({
@@ -63,8 +57,7 @@ server.on('clientDisconnected', async (client) => {
         }
       })
     })
-
-    debug(`Client ${client.id} associated to Agent (${agent.uuid}) marked as disconnected`)
+    debug(`Client (${client.id}) associated to Agent (${agent.uuid}) marked as disconnected`)
   }
 })
 
@@ -109,6 +102,7 @@ server.on('published', async (packet, client) => {
             })
           })
         }
+
         // Store Metrics
         for (let metric of payload.metrics) {
           let m
@@ -127,7 +121,7 @@ server.on('published', async (packet, client) => {
 })
 
 server.on('ready', async () => {
-  const services = await db(config).catch(handleFatalError)
+  const services = await db(config.db).catch(handleFatalError)
 
   Agent = services.Agent
   Metric = services.Metric
@@ -136,17 +130,6 @@ server.on('ready', async () => {
 })
 
 server.on('error', handleFatalError)
-
-function handleFatalError (err) {
-  console.error(`${chalk.red('[fatal error]')} ${err.message}`)
-  console.error(err.stack)
-  process.exit(1)
-}
-
-function handleError (err) {
-  console.error(`${chalk.red('[error]')} ${err.message}`)
-  console.error(err.stack)
-}
 
 process.on('uncaughtException', handleFatalError)
 process.on('unhandledRejection', handleFatalError)

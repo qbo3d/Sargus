@@ -2,6 +2,8 @@
 
 const db = require('../')
 
+const { handleFatalError } = require('../sargus-tools/utils')
+
 async function run() {
     const config = {
         database: process.env.DB_NAME || 'sargus',
@@ -46,12 +48,6 @@ async function run() {
     const metricsByType = await Metric.findByTypeAgentUuid('memory', agent.uuid).catch(handleFatalError)
     console.log('--metrics--')
     console.log(metricsByType)
-}
-
-function handleFatalError(err) {
-    console.error(err.message)
-    console.error(err.stack)
-    process.exit(1)
 }
 
 run()

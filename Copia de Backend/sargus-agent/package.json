@@ -1,0 +1,22 @@
+{
+  "name": "sargus-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sargus IoT plstform - Agent Module",
+  "main": "index.js",
+  "scripts": {
+    "fix": "standard --fix",
+    "lint": "standard"
+  },
+  "author": "Sergio Mesa <sergio@qbo3d.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "defaults": "^1.0.3",
+    "mqtt": "^2.18.8",
+    "uuid": "^3.3.2"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sargus-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sargus IoT platform - Tools Module",
+  "scripts": {
+    "fix": "standard --fix",
+    "lint": "standard"
+  },
+  "author": "Sergio Mesa <sergio@qbo3d.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "debug": "^4.1.1"
+  }
+}
