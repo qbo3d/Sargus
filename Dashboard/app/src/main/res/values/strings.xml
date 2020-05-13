@@ -1,0 +1,47 @@
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">Dashboard</string>
+
+    <!-- Sistema -->
+    <string name="file_wrong">Ocurrio un error al crear el archivo</string>
+    <!--    <string name="gcm_defaultSenderId">529159743009</string>-->
+
+    <!-- Strings related to login -->
+    <string name="login_usuario">Usuario</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_action_sign_in">Ingresar</string>
+    <string name="login_error_invalid_email">Usuario invalido</string>
+    <string name="login_error_invalid_password">Contraseña muy corta</string>
+    <string name="login_error_incorrect_password">Usuario o Contraseña incorrectos</string>
+    <string name="login_error_field_required">Campo requerido</string>
+    <string name="login_connection_error">Error de conexión</string>
+    <string name="login_net_error">Error de la red</string>
+    <string name="login_connection_error_content">Verifique la conexión a internet</string>
+    <string name="login_net_error_content">Verifique la conexión a la red de datos</string>
+
+    <!--ProgressDialog-->
+    <string name="pd_cargando" tools:ignore="TypographyEllipsis">Cargando...</string>
+    <string name="df_edit_name">fragment_edit_name</string>
+
+    <!-- Strings related to LeftSlidingMenu -->
+    <string name="lsm_proyecto">Proyecto</string>
+    <string name="lsm_scanning">Escanear modulos</string>
+    <string name="lsm_item">Blindobarras</string>
+    <string name="lsm_inicio">Inicio</string>
+    <string name="lsm_se1">Subestación 01 (real time)</string>
+    <string name="lsm_se2">Subestación 02 (real time)</string>
+    <string name="lsm_se1_list">Subestación 01 (listado lecturas recientes)</string>
+    <string name="lsm_se2_list">Subestación 02 (listado lecturas recientes)</string>
+    <string name="lsm_captura">Ingresar ítem</string>
+    <string name="lsm_logout">Cerrar sesión</string>
+    <string name="default_notification_channel_id">default_notification</string>
+
+    <string name="viewGithub">View on GitHub</string>
+    <string name="actionAddEntry">Add Entry</string>
+    <string name="actionClearChart">Clear chart</string>
+    <string name="actionFeedMultiple">Add Multiple</string>
+    <string name="actionSave">Save to Gallery</string>
+
+
+</resources>

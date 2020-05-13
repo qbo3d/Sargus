@@ -10,10 +10,8 @@ import com.qbo3d.sargus.Objects.Entity;
 import com.qbo3d.sargus.Objects.Group;
 import com.qbo3d.sargus.Objects.Ticket;
 import com.qbo3d.sargus.Objects.Usuario;
-import com.qbo3d.sargus.Util;
-import com.qbo3d.sargus.Vars;
 
-import java.io.IOException  ;
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Response;

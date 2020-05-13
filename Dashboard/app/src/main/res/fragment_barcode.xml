@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gris_100"
+    android:fitsSystemWindows="true"
+    tools:context=".Interface.Fragments.BarcodeFragment">
+
+    <LinearLayout
+        android:id="@+id/am_contenedor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        tools:ignore="PrivateResource">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin_medium"
+            android:elevation="@dimen/margin_elevation"
+            tools:targetApi="lollipop">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/shape_rounded_item">
+
+                <EditText
+                    android:id="@+id/et_ab_texto"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:theme="@style/TextLabel" />
+
+                <ImageButton
+                    android:id="@+id/ib_ab_scan"
+                    android:layout_width="@dimen/margin_toolbar"
+                    android:layout_height="@dimen/margin_toolbar"
+                    android:src="@drawable/ico_codigo_enfocar_bla"
+                    android:backgroundTint="@color/azul_ws"
+                    android:background="@drawable/shape_semi_rounded_le_item"
+                    android:scaleType="centerCrop"
+                    android:text="QR Code" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_ab_buscar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/azul_ws_medio"
+                android:background="@drawable/shape_rounded_item"
+                android:textColor="@color/white"
+                android:text="Buscar"
+                android:paddingLeft="@dimen/margin_medium_x"
+                android:paddingRight="@dimen/margin_medium_x"
+                android:layout_marginTop="@dimen/margin_small"/>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

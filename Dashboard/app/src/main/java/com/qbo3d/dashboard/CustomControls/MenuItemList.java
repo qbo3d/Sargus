@@ -1,0 +1,61 @@
+package com.qbo3d.dashboard.CustomControls;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.TypedArray;
+
+import androidx.annotation.RequiresApi;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.qbo3d.dashboard.R;
+
+/**
+ * Created by Proyecto Simio on 03/10/2014.
+ */
+
+public class MenuItemList extends LinearLayout {
+
+    private ImageView iv_ti;
+    private TextView tv_ti;
+    private TypedArray a;
+
+    @SuppressLint("NewApi")
+    public MenuItemList(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        if (getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) != null) {
+            ((LayoutInflater) getContext().getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE)).inflate(
+                    R.layout.toolbox_item, this, true);
+        }
+
+        iv_ti = findViewById(R.id.iv_ti);
+        tv_ti = findViewById(R.id.tv_ti);
+
+        a = context.obtainStyledAttributes(attrs, R.styleable.MenuItemList);
+
+        tv_ti.setText(a.getString(R.styleable.MenuItemList_text));
+        iv_ti.setImageDrawable(a.getDrawable(R.styleable.MenuItemList_src));
+        if (a.getColor(R.styleable.MenuItemList_tint,0) != 0)
+            iv_ti.getDrawable().setTint(a.getColor(R.styleable.MenuItemList_tint,0));
+        a.recycle();
+    }
+
+    public void setSelected(boolean select){
+        if (select){
+            tv_ti.setTextColor(getResources().getColor(R.color.white));
+            iv_ti.getDrawable().setTint(getResources().getColor(R.color.white));
+        } else {
+            tv_ti.setTextColor(getResources().getColor(R.color.negro));
+            iv_ti.getDrawable().setTint(getResources().getColor(R.color.negro));
+        }
+    }
+
+    public String getText(){
+        return tv_ti.getText().toString();
+    }
+}
