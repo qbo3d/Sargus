@@ -41,7 +41,7 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "sargus-agent": "file:../sargus-agent",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2"
